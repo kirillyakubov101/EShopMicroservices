@@ -12,10 +12,11 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["CatalogAPI/CatalogAPI.csproj", "CatalogAPI/"]
-RUN dotnet restore "./CatalogAPI/CatalogAPI.csproj"
+COPY ["Services/Catalog/CatalogAPI.csproj", "Services/Catalog/"]
+COPY ["BuildingBlocks/BuildingBlocks.csproj", "BuildingBlocks/"]
+RUN dotnet restore "./Services/Catalog/CatalogAPI.csproj"
 COPY . .
-WORKDIR "/src/CatalogAPI"
+WORKDIR "/src/Services/Catalog"
 RUN dotnet build "./CatalogAPI.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage
